@@ -1,0 +1,48 @@
+package com.example.commanderloli.animeassistant;
+
+import android.app.TimePickerDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.format.DateUtils;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
+import java.util.Calendar;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    TimePickerDialog timePickerDialog;
+    Calendar calendar = Calendar.getInstance();
+    TextView alarmtime;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        alarmtime = (TextView) findViewById(R.id.alarmTime);
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+       timePickerDialog = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                Calendar timeCalendar = Calendar.getInstance();
+                timeCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                timeCalendar.set(Calendar.MINUTE, minute);
+
+                String timestring = DateUtils.formatDateTime(MainActivity.this, timeCalendar.getTimeInMillis(), DateUtils.FORMAT_SHOW_TIME);
+                alarmtime.setText(timestring);
+
+
+            }
+        },calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), android.text.format.DateFormat.is24HourFormat(MainActivity.this));
+
+        timePickerDialog.show();
+
+    }
+}
+
